@@ -1,0 +1,2 @@
+### Get the list of all roles
+GET http://localhost:3000/roles

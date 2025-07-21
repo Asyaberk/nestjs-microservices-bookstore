@@ -14,7 +14,7 @@ export class User{
     @Column()
     password: string;
 
-    //Bir userın en fazla bir rolü olabilir (bir role sahip birden fazla user olabilir)
+    //A user can have at most one role (but there can be more than one user with a role)
     @ManyToOne(() => Role, role => role.users)
     role: Role;
 
