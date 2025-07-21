@@ -9,6 +9,9 @@ Content-Type: application/json
     "name": "user"
 }
 
+### Get the list of all users
+GET http://localhost:3000/auth/list-users
+
 ### Create a new user with the foreign key roleId
 POST http://localhost:3000/auth/register
 Content-Type: application/json

@@ -6,7 +6,7 @@ import { CreateRoleDto } from './dtos/create-role.dto';
 @Controller('roles')
 export class RolesController {
     constructor(private readonly rolesService: RolesService) { }
-
+ 
     //list all the roles
     @Get()
     async getAllRoles(): Promise<Role[]> { 

@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from "typeorm"; 
+import { AfterInsert, Entity, Column, PrimaryGeneratedColumn, ManyToOne } from "typeorm"; 
 import { Role } from "src/roles/roles.entity";
 
 
@@ -17,5 +17,11 @@ export class User{
     //A user can have at most one role (but there can be more than one user with a role)
     @ManyToOne(() => Role, role => role.users)
     role: Role;
+
+    //control user insert from terminal  (@AfterRemove/Update could be added later)
+    @AfterInsert()
+    logInsert() {
+        console.log('Inserted User with id: ', this.id);
+    }
 
 }

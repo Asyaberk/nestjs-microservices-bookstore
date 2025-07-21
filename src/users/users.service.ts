@@ -18,5 +18,10 @@ export class UsersService {
         });
         return this.repo.save(user);
     }
+
+    //to list all roles from the database
+    async findAll(): Promise<User[]> { 
+        return this.repo.find();
+    }
 }
  

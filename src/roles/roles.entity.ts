@@ -1,5 +1,5 @@
 import { User } from "src/users/users.entity";
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm"; 
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, AfterInsert } from "typeorm"; 
 
 @Entity()
 export class Role{
@@ -14,4 +14,10 @@ export class Role{
     //There can be more than one user with a role (but a user can have at most one role.) 
     @OneToMany(() => User, user => user.role)
     users: User[];
+
+    //control role insert from terminal (@AfterRemove/Update could be added later)
+    @AfterInsert()
+    logInsert() {
+        console.log('Inserted Role with id: ', this.id);
+    }
 }
