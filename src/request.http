@@ -1,2 +1,10 @@
 ### Get the list of all roles
 GET http://localhost:3000/roles
+
+### Create a new role
+POST http://localhost:3000/roles/create
+Content-Type: application/json
+
+{
+    "name": "user"
+}

@@ -9,7 +9,13 @@ export class RolesService {
     @InjectRepository(Role) private readonly roleRepo: Repository<Role>,) {}
 
   //to list all roles from the database
-  async findAll(): Promise<Role[]> {
+  async findAll(): Promise<Role[]> { 
     return this.roleRepo.find();
+  }
+
+  //create a role just giving a name in post request
+  create(name: string) {
+    const role = this.roleRepo.create({ name });
+    return this.roleRepo.save(role);
   }
 }
