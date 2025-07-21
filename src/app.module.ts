@@ -3,7 +3,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
+import { RolesModule } from './roles/roles.module';
+import { User } from './users/users.entity';
+import { Role } from './roles/roles.entity';
 
+//PostgreSQL imports
 @Module({
   imports: [TypeOrmModule.forRoot({
     type: 'postgres',
@@ -12,9 +17,13 @@ import { AuthModule } from './auth/auth.module';
     port: 5432,
     username: 'asya',
     password: 'Asya1234',
-    autoLoadEntities: true,
+    //Entites: User and Role table 
+    entities: [User, Role],
     synchronize: true, 
-  }), AuthModule],
+  }),
+    AuthModule,
+    UsersModule,
+    RolesModule],
   controllers: [AppController],
   providers: [AppService],
 })
