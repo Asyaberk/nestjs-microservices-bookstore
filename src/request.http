@@ -1,3 +1,4 @@
+#will be deleted
 ### Get the list of all roles
 GET http://localhost:3000/roles
 
@@ -10,14 +11,15 @@ Content-Type: application/json
 }
 
 ### Get the list of all users
-GET http://localhost:3000/auth/list-users
+GET http://localhost:3000/users
 
-### Create a new user with the foreign key roleId
-POST http://localhost:3000/auth/register
-Content-Type: application/json
 
-{
-    "email": "user@test.com",
-    "password": "user",
-    "roleId": 2
-}
+# ### Create a new user with the foreign key roleId
+# POST http://localhost:3000/auth/register
+# Content-Type: application/json
+
+# {
+#     "email": "user@test.com",
+#     "password": "user",
+#     "roleId": 2
+# }

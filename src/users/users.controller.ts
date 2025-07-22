@@ -3,16 +3,18 @@ import { CreateUserDto } from './dtos/create-user.dto';
 import { UsersService } from './users.service';
 import { User } from './users.entity';
 
-@Controller('auth')
+@Controller('users')
 export class UsersController {
     constructor(private userService: UsersService) { };
 
     //list all the users
-    @Get('/list-users')
+    @Get()
     async getAllRoles(): Promise<User[]> { 
         return this.userService.findAll();
     }
-    
+
+    //Auth Modülünün içinde yapacağım JWT öğreniyorum
+    /*
     //register function to create a new user
     @Post('/register')
     createUser(@Body() body: CreateUserDto) {
@@ -21,5 +23,8 @@ export class UsersController {
 
     //login function
 
-    //logout function 
+    //logout function  
+    */
+    
+    //update function
 }

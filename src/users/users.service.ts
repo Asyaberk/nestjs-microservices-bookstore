@@ -8,7 +8,7 @@ export class UsersService {
 
     constructor(@InjectRepository(User) private repo: Repository<User>) { }
     
-    //create a new user
+    /* //create a new user
     create(email: string, password: string, roleId: number) {
         const user = this.repo.create({
             email,
@@ -17,7 +17,7 @@ export class UsersService {
             role: { id: roleId }
         });
         return this.repo.save(user);
-    }
+    } */
 
     //to list all roles from the database
     async findAll(): Promise<User[]> { 
