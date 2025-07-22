@@ -1,8 +1,7 @@
-import { IsString } from "class-validator";
+import { IsString, IsNotEmpty } from "class-validator";
 
-export class CreateRoleDto{
-    
-    // validator for creating a role
-    @IsString()
-    name: string;
+export class CreateRoleDto {
+  @IsString()
+  @IsNotEmpty() 
+  name: string;
 }

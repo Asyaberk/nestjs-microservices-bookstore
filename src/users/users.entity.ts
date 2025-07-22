@@ -1,5 +1,6 @@
 import { AfterInsert, Entity, Column, PrimaryGeneratedColumn, ManyToOne } from "typeorm"; 
 import { Role } from "src/roles/roles.entity";
+import { Exclude } from "class-transformer";
 
 
 @Entity()
@@ -11,6 +12,8 @@ export class User{
     @Column()
     email: string;
 
+    //exclude, we dont want to see pasword in body response
+    @Exclude()
     @Column()
     password: string;
 
@@ -18,7 +21,7 @@ export class User{
     @ManyToOne(() => Role, role => role.users)
     role: Role;
 
-    //control user insert from terminal  (@AfterRemove/Update could be added later)
+    //control user insert from terminal  
     @AfterInsert()
     logInsert() {
         console.log('Inserted User with id: ', this.id);
