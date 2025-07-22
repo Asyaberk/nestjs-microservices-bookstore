@@ -1,10 +1,10 @@
 import { Body, ClassSerializerInterceptor, Controller, Get, Post, Req, Res, UseGuards, UseInterceptors } from '@nestjs/common';
-import { AuthService } from './auth.service';
+import { AuthService } from '../services/auth.service';
 import { CreateUserDto } from 'src/users/dtos/create-user.dto';
 import { LoginUserDto } from 'src/users/dtos/login-user.dto';
 import { CurrentUser } from 'src/users/decorators/current-user.decorator';
-import { User } from 'src/users/users.entity';
-import { JwtAuthGuard } from 'src/guards/auth.guard';
+import { User } from 'src/users/entities/users.entity';
+import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
 
 //We add these because the password field is automatically removed from the response.
 @UseInterceptors(ClassSerializerInterceptor) 

@@ -5,8 +5,8 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { RolesModule } from './roles/roles.module';
-import { User } from './users/users.entity';
-import { Role } from './roles/roles.entity';
+import { User } from './users/entities/users.entity';
+import { Role } from './roles/entities/roles.entity';
 
 //PostgreSQL imports
 @Module({
