@@ -16,7 +16,7 @@ export class RolesController {
     //create a new role
     @Post('/create')
     createRole(@Body() body: CreateRoleDto) {
-        return this.rolesService.create(body.name);
+        return this.rolesService.create(body);
     }
 
 }
