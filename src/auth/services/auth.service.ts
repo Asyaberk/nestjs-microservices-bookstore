@@ -1,36 +1,36 @@
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from 'src/users/dtos/create-user.dto';
-import { User } from 'src/users/entities/users.entity';
-import { Repository } from 'typeorm';
 //installled bcrypt
 import * as bcrypt from "bcrypt";
 import { JwtService } from '@nestjs/jwt';
 import { LoginUserDto } from 'src/users/dtos/login-user.dto';
+import { UserRepository } from 'src/users/repositories/users.repository';
+import { User } from 'src/users/entities/users.entity';
 
 @Injectable()
 export class AuthService {
     //jwt web token
+    //own user repo
     constructor(
-        @InjectRepository(User) private repo: Repository<User>,
-        private jwtService: JwtService
+        private readonly repo: UserRepository,
+        private readonly jwtService: JwtService
     ) { }
 
     //register function
     async register(body: CreateUserDto) {
         //check if email is in use
-        const emailInUse = await this.repo.findOne({where: { email: body.email }});
+        const emailInUse = await this.repo.findOneByEmail(body.email);
         if (emailInUse) {
             throw new BadRequestException('ERROR: Email already in use!')
         }
         //hash
         const hashedPassword = await bcrypt.hash(body.password, 10);
         //create and save user
-        const user = this.repo.create({
+        const user = {
             email: body.email,
             password: hashedPassword, 
             role: { id: body.roleId }, 
-        });
+        } as User;
         await this.repo.save(user);
         return this.createToken(user.email);
     } 
@@ -47,15 +47,15 @@ export class AuthService {
 
     //login fuction yeter
     async login(body: LoginUserDto, response) {
-        const { email, password } = body;
+
         //find if user exists by email
-        const user = await this.repo.findOne({ where: { email: body.email } });
+        const user = await this.repo.findOneByEmail(body.email);
         if (!user) {
             throw new UnauthorizedException('ERROR: Invalid credentials!');
         }
 
         //compare entered passwords with existing password
-        const passwordMatch = await bcrypt.compare(password, user.password)
+        const passwordMatch = await bcrypt.compare(body.password, user.password);
         if (!passwordMatch) {
             throw new UnauthorizedException('ERROR: Invalid credentials!');
         }
@@ -75,7 +75,7 @@ export class AuthService {
         return { message: 'SUCCESS: Logged out!' };
     }
 
-    //whoAmI function yeter
+    //whoAmI function
     async whoAmI(request) {
         try {
             const cookie = request.cookies['jwt'];
@@ -84,7 +84,7 @@ export class AuthService {
             if (!data) {
                 throw new UnauthorizedException();
             }
-            const user = await this.repo.findOne({ where: { id: data.sub } });
+            const user = await this.repo.findOneById(data.sub);
             
             return user;
 

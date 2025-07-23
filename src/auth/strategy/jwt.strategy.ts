@@ -7,7 +7,7 @@ import { Repository } from "typeorm";
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
-    constructor(@InjectRepository(User) private repo: Repository<User>) {
+    constructor(@InjectRepository(User) private readonly repo: Repository<User>) {
         super({
             //extract token
             jwtFromRequest: ExtractJwt.fromExtractors([(req) => req?.cookies?.jwt]),

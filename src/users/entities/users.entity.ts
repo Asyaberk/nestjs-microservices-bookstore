@@ -3,7 +3,7 @@ import { Role } from "src/roles/entities/roles.entity";
 import { Exclude } from "class-transformer";
 
 
-@Entity()
+@Entity('user')
 export class User{
 
     @PrimaryGeneratedColumn()

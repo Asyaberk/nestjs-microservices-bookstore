@@ -8,7 +8,6 @@ export class RolesRepository {
     constructor(private readonly dataSource: DataSource) { }
 
     //our own repo methods that makes oerations in the db
-
     async find(): Promise<Role[]> {
         const query = 'SELECT * FROM role';
         const result = await this.dataSource.query(query);
