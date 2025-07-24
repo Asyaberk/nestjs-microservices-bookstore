@@ -32,7 +32,9 @@ export class AuthService {
             role: { id: body.roleId }, 
         } as User;
         await this.repo.save(user);
-        return this.createToken(user.email);
+
+        const userToken = await this.createToken(user.email)
+        return {userToken};
     } 
 
     //Token creation
@@ -73,24 +75,5 @@ export class AuthService {
     logout(response) {
         response.clearCookie('jwt');
         return { message: 'SUCCESS: Logged out!' };
-    }
-
-    //whoAmI function
-    async whoAmI(request) {
-        try {
-            const cookie = request.cookies['jwt'];
-            const data = await this.jwtService.verifyAsync(cookie);
-
-            if (!data) {
-                throw new UnauthorizedException();
-            }
-            const user = await this.repo.findOneById(data.sub);
-            
-            return user;
-
-        } catch (err) {
-            console.log(`ERROR: ${err}`);
-            throw new UnauthorizedException('ERROR: Invalid or expired token!');
-        }
     }
 }

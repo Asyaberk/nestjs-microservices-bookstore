@@ -1,36 +1,36 @@
-import { Injectable } from "@nestjs/common";
-import { DataSource } from "typeorm";
-import { User } from "../entities/users.entity";
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { User } from '../entities/users.entity';
 
 @Injectable()
+// Custom user repository
 export class UserRepository {
-    
-    //no inject repository
-    constructor(private readonly dataSource: DataSource) { }
+    // Injecting repository to avoid raw sql and ensure safety
+    constructor(@InjectRepository(User) private readonly userRepo: Repository<User>) {}
 
-    //our own repo methods that makes oerations in the db
-    //user service
     async find(): Promise<User[]> {
-        const query = 'SELECT id, email FROM "user"';
-        const result = await this.dataSource.query(query);
-        return result;
+        return this.userRepo.find({
+            select: ['id', 'email'], 
+        });
     }
 
-    //auth service
     async findOneByEmail(email: string): Promise<User | null> {
-        const query = 'SELECT * FROM "user" WHERE email = $1 LIMIT 1';
-        const result = await this.dataSource.query(query, [email]);
-        return result[0] || null;
+        return this.userRepo.findOne({
+            where: { email },
+            relations: ['role'], 
+        });
     }
 
     async findOneById(id: number): Promise<User | null> {
-        const query = 'SELECT * FROM "user" WHERE id = $1 LIMIT 1';
-        const result = await this.dataSource.query(query, [id]);
-        return result[0] || null;
+        return this.userRepo.findOne({
+            where: { id },
+            relations: ['role'],
+        });
     }
 
-    async save(user: User): Promise<void> {
-        const query = 'INSERT INTO "user"(email, password, "roleId") VALUES($1, $2, $3)';
-        await this.dataSource.query(query, [user.email, user.password, user.role.id]);
+    async save(user: Partial<User>): Promise<User> {
+        const newUser = this.userRepo.create(user); 
+        return this.userRepo.save(newUser); 
     }
 }

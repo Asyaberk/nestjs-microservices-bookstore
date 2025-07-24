@@ -1,23 +1,20 @@
 import { Injectable } from '@nestjs/common';
-import { DataSource } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { Role } from '../entities/roles.entity';
 
 @Injectable()
+// Custom role repository 
 export class RolesRepository {
-    //no inject repository
-    constructor(private readonly dataSource: DataSource) { }
+    // Injecting repository to avoid raw SQL and ensure safety
+    constructor(@InjectRepository(Role) private readonly roleRepo: Repository<Role>) {}
 
-    //our own repo methods that makes oerations in the db
     async find(): Promise<Role[]> {
-        const query = 'SELECT * FROM role';
-        const result = await this.dataSource.query(query);
-        return result;
+        return this.roleRepo.find();
     }
 
     async save(name: string): Promise<Role> {
-        const query = 'INSERT INTO role(name) VALUES($1) RETURNING *';
-        const result = await this.dataSource.query(query, [name]);
-        return result[0];
+        const newRole = this.roleRepo.create({ name }); 
+        return this.roleRepo.save(newRole); 
     }
-
 }
