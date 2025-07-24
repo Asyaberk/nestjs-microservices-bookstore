@@ -7,6 +7,8 @@ import { UsersModule } from './users/users.module';
 import { RolesModule } from './roles/roles.module';
 import { User } from './users/entities/users.entity';
 import { Role } from './roles/entities/roles.entity';
+import { BookModule } from './books/book.module';
+import { Book } from './books/entities/books.entity';
 
 //PostgreSQL imports
 @Module({
@@ -18,12 +20,13 @@ import { Role } from './roles/entities/roles.entity';
     username: 'asya',
     password: 'Asya1234',
     //Entites: User and Role table 
-    entities: [User, Role],
+    entities: [User, Role, Book],
     synchronize: true, 
   }),
     AuthModule,
     UsersModule,
-    RolesModule],
+    RolesModule,
+    BookModule],
   controllers: [AppController],
   providers: [AppService],
 })
