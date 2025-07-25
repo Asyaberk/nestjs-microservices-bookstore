@@ -20,7 +20,11 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     //verify it with the secret, 
     //then decode the content and put it into the payload
     async validate(payload: any) {
-        const user = await this.repo.findOne({ where: { id: payload.sub } });
+        const user = await this.repo.findOne({
+            where: { id: payload.sub },
+            //for the roles guard
+            relations: ['role']
+        });
         return user;
     }
 }
