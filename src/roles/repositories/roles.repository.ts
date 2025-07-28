@@ -14,6 +14,11 @@ export class RolesRepository {
     }
 
     async save(name: string): Promise<Role> {
+        //check if role name exists(for the safety of the name 'admin')
+        const existing = await this.roleRepo.findOne({ where: { name } });
+        if (existing) return existing;
+        
+        //then create new
         const newRole = this.roleRepo.create({ name }); 
         return this.roleRepo.save(newRole); 
     }

@@ -10,19 +10,35 @@ import { Role } from './roles/entities/roles.entity';
 import { BookModule } from './books/book.module';
 import { Book } from './books/entities/books.entity';
 
+// default db options(from nestjs documentation)
+const defaultOptions = {
+  type: 'postgres' as const,
+  port: 5432,
+  username: 'asya',
+  password: 'Asya1234',
+  host: 'localhost',
+  synchronize: true,
+};
+
 //PostgreSQL imports
 @Module({
-  imports: [TypeOrmModule.forRoot({
-    type: 'postgres',
-    database: 'dbpostgre',
-    host: 'localhost',
-    port: 5432,
-    username: 'asya',
-    password: 'Asya1234',
-    //Entites: User and Role table 
-    entities: [User, Role, Book],
-    synchronize: true, 
-  }),
+  imports: [
+    //default database connection: nestjs-db
+    TypeOrmModule.forRoot({
+      ...defaultOptions,
+      database: 'dbpostgre',
+      entities: [User, Role, Book],
+    }),
+
+    //dont care this import
+    //second database whit a name librarydb (i may use later, just added the connection)
+    TypeOrmModule.forRoot({
+      name: 'libraryConnection',
+      ...defaultOptions,
+      database: 'librarydb',
+      entities: [],
+    }),
+
     AuthModule,
     UsersModule,
     RolesModule,

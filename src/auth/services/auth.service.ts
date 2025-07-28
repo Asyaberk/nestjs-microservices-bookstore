@@ -34,7 +34,10 @@ export class AuthService {
         await this.repo.save(user);
 
         const userToken = await this.createToken(user.email)
-        return {userToken};
+        return {
+            userToken,
+            user: { id: user.id, email: user.email}
+        };
     } 
 
     //Token creation
@@ -68,7 +71,10 @@ export class AuthService {
         //store in cookie
         response.cookie('jwt', jwt, { httpOnly: true });
 
-        return { message: 'SUCCESS: Logged in!' };
+        return {
+            message: 'SUCCESS: Logged in!',
+            user: { id: user.id, email: user.email, role: user.role.name }
+        };
     }
 
     //logout function
