@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Role } from '../entities/roles.entity';
@@ -16,7 +16,9 @@ export class RolesRepository {
     async save(name: string): Promise<Role> {
         //check if role name exists(for the safety of the name 'admin')
         const existing = await this.roleRepo.findOne({ where: { name } });
-        if (existing) return existing;
+        if (existing) {
+            throw new BadRequestException(`Role '${name}' already exists!`);
+        };
         
         //then create new
         const newRole = this.roleRepo.create({ name }); 

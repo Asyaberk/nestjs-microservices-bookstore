@@ -17,18 +17,18 @@ export class BookRepository {
         return this.repo.save(newBook);
     }
 
-    async findOneById(id: number): Promise<Book | null> {
-        return this.repo.findOne({
-            where: { id }
-        });
+    async findOneById(id: number): Promise<Book> {
+        const book = await this.repo.findOne({ where: { id } });
+        if (!book) {
+            throw new NotFoundException(`Book with ID '${id}' was not found!`);
+        }
+        return book;
     }
 
     async update(id: number, updateBook: UpdateBookDto) {
         //look for the book
         const book = await this.findOneById(id);
-        if (!book) {
-            throw new NotFoundException();
-        }
+ 
         //update
         Object.assign(book, updateBook);
         return await this.repo.save(book);
@@ -38,7 +38,7 @@ export class BookRepository {
         //look for the book
         const book = await this.findOneById(id);
         if (!book) {
-            throw new NotFoundException();
+            throw new NotFoundException(`Book with ID '${id}' was not found!`);
         }
         //delete
         return  await this.repo.remove(book);

@@ -25,6 +25,6 @@ export class BookService {
 
     remove(id: number): Promise<Book> {
         return this.bookRepository.remove(id);
-    }
+    } 
 
 }

@@ -21,7 +21,7 @@ export class AuthService {
         //check if email is in use
         const emailInUse = await this.repo.findOneByEmail(body.email);
         if (emailInUse) {
-            throw new BadRequestException('ERROR: Email already in use!')
+            throw new BadRequestException('This email is already registered!')
         }
         //hash
         const hashedPassword = await bcrypt.hash(body.password, 10);
@@ -50,19 +50,19 @@ export class AuthService {
     }
 
 
-    //login fuction yeter
+    //login fuction
     async login(body: LoginUserDto, response) {
 
         //find if user exists by email
         const user = await this.repo.findOneByEmail(body.email);
         if (!user) {
-            throw new UnauthorizedException('ERROR: Invalid credentials!');
+            throw new UnauthorizedException('No account found with this email!');
         }
 
         //compare entered passwords with existing password
         const passwordMatch = await bcrypt.compare(body.password, user.password);
         if (!passwordMatch) {
-            throw new UnauthorizedException('ERROR: Invalid credentials!');
+            throw new UnauthorizedException('Password is incorrect!');
         }
 
         //generate JWT tokens
