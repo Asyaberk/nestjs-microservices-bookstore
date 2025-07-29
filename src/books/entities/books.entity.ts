@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, AfterInsert } from "typeorm"; 
+import { Entity, Column, PrimaryGeneratedColumn, AfterInsert, AfterUpdate, AfterRemove } from "typeorm"; 
 
 @Entity('book')
 export class Book{
@@ -15,9 +15,19 @@ export class Book{
     @Column()
     publishedYear: number;
 
-    //control role insert from terminal (@AfterRemove/Update could be added later)
+    //control role insert from terminal 
     @AfterInsert()
     logInsert() {
         console.log('Inserted Book with id: ', this.id);
+    }
+
+    @AfterUpdate()
+    logUpdate() {
+        console.log('Updated Book with id: ', this.id);
+    }
+
+    @AfterRemove()
+    logRemove() {
+        console.log('Removed Book with id: ', this.id);
     }
 }

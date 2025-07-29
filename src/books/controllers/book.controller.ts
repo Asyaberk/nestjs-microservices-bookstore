@@ -4,8 +4,8 @@ import { Book } from '../entities/books.entity';
 import { CreateBookDto } from '../dtos/create-book.dto';
 import { UpdateBookDto } from '../dtos/update-book.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { RolesGuard } from 'src/auth/guards/roles.guard';
-import { Roles } from 'src/roles/decorators/roles.decorator';
+import { RolesGuard } from '../../guards/roles.guard';
+import { Roles } from '../../roles/decorators/roles.decorator';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiForbiddenResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @Controller('books')

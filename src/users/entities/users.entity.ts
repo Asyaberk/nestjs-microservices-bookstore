@@ -1,5 +1,5 @@
 import { AfterInsert, Entity, Column, PrimaryGeneratedColumn, ManyToOne } from "typeorm"; 
-import { Role } from "src/roles/entities/roles.entity";
+import { Role } from "../../roles/entities/roles.entity";
 import { Exclude } from "class-transformer";
 
 

@@ -1,10 +1,10 @@
 import { Body, ClassSerializerInterceptor, Controller, Get, Post, Res, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
-import { CreateUserDto } from 'src/users/dtos/create-user.dto';
-import { LoginUserDto } from 'src/users/dtos/login-user.dto';
-import { CurrentUser } from 'src/users/decorators/current-user.decorator';
-import { User } from 'src/users/entities/users.entity';
-import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
+import { CreateUserDto } from '../../users/dtos/create-user.dto';
+import { LoginUserDto } from '../../users/dtos/login-user.dto';
+import { CurrentUser } from '../../users/decorators/current-user.decorator';
+import { User } from '../../users/entities/users.entity';
+import { JwtAuthGuard } from '../../guards/auth.guard';
 import { ApiBadRequestResponse, ApiBody, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 
 //We add these because the password field is automatically removed from the response.
@@ -93,7 +93,6 @@ export class AuthController {
     }
 
     //check current user to test login logout function
-    @Get('/whoami')
     @Get('/whoami')
     @ApiOperation({ summary: "Get current authenticated user" })
     @ApiOkResponse({

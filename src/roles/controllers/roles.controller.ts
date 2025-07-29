@@ -10,7 +10,7 @@ export class RolesController {
     constructor(private readonly rolesService: RolesService) { }
  
     //list all the roles
-     @Get()
+    @Get()
     @ApiOperation({ summary: 'Fetch all roles' })
     @ApiOkResponse({
         description: 'Returns a list of all roles.',
