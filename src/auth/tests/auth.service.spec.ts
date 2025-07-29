@@ -99,7 +99,7 @@ describe('AuthService', () => {
       expect(mockResponse.cookie).toHaveBeenCalledWith('jwt', 'mocked-jwt-token', { httpOnly: true });
     });
 
-    //test 3.1
+    //test 3.2
     it('can throw an error if email is unused', async () => {
       //no user found
       mockUserRepository.findOneByEmail.mockResolvedValue(null);
@@ -109,7 +109,7 @@ describe('AuthService', () => {
       ).rejects.toThrow('No account found with this email!');
     });
 
-    //test 3.2
+    //test 3.3
     it('can throw an error if password is incorrect', async () => {
       mockUserRepository.findOneByEmail.mockResolvedValue({ email: 'test@mail.com'});
       
