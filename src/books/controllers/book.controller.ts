@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { BookService } from '../services/book.service';
 import { Book } from '../entities/books.entity';
 import { CreateBookDto } from '../dtos/create-book.dto';
@@ -16,6 +16,7 @@ export class BookController {
     //all users functions
     //list all the books
     @Get()
+    @HttpCode(200)
     @ApiOperation({ summary: 'Get all books' })
     @ApiOkResponse({
         description: 'Returns a list of all books.',
@@ -39,6 +40,7 @@ export class BookController {
     @Roles('admin')
     @ApiBearerAuth()
     @Post('/create')
+    @HttpCode(201)
     @ApiOperation({ summary: 'Create a new book (Admin only)' })
     @ApiOkResponse({
         description: 'Book created successfully.',
@@ -56,6 +58,7 @@ export class BookController {
     @Roles('admin')
     @ApiBearerAuth()
     @Put('/update/:id')
+    @HttpCode(200)
     @ApiOperation({ summary: 'Update a book by ID (Admin only)' })
     @ApiOkResponse({
         description: 'Book updated successfully.',
@@ -73,6 +76,7 @@ export class BookController {
     @Roles('admin')
     @ApiBearerAuth()
     @Delete('/delete/:id')
+    @HttpCode(200)
     @ApiOperation({ summary: 'Delete a book by ID (Admin only)' })
     @ApiOkResponse({
         description: 'Book deleted successfully.',

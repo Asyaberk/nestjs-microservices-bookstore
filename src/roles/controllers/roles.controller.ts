@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post } from '@nestjs/common';
 import { RolesService } from '../services/roles.service';
 import { Role } from '../entities/roles.entity';
 import { CreateRoleDto } from '../dtos/create-role.dto';
@@ -11,6 +11,7 @@ export class RolesController {
  
     //list all the roles
     @Get()
+    @HttpCode(200)
     @ApiOperation({ summary: 'Fetch all roles' })
     @ApiOkResponse({
         description: 'Returns a list of all roles.',
@@ -27,6 +28,7 @@ export class RolesController {
 
     //create a new role
     @Post('/create')
+    @HttpCode(201)
     @ApiOperation({ summary: 'Create a new role' })
     @ApiCreatedResponse({
         description: 'Role created successfully.',

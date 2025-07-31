@@ -15,17 +15,13 @@ export class UserRepository {
         });
     }
 
-    async findOneByEmail(email: string): Promise<User> {
+    async findOneByEmail(email: string): Promise<User | null> {
         const user = await this.userRepo.findOne({
             where: { email },
             relations: ['role'],
         });
 
-        if (!user) {
-            throw new NotFoundException(`User with email '${email}' not found!`);
-        }
-
-        return user;
+       return user || null;
     }
 
     async findOneById(id: number): Promise<User | null> {

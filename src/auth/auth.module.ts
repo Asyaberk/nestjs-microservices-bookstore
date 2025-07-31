@@ -4,7 +4,7 @@ import { AuthService } from './services/auth.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../users/entities/users.entity';
 import { JwtModule } from '@nestjs/jwt';
-import { JwtStrategy } from './strategy/jwt.strategy';
+import { JwtStrategy } from '../strategy/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { UserRepository } from '../users/repositories/users.repository';
 import { RolesModule } from '../roles/roles.module';

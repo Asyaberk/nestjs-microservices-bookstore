@@ -26,14 +26,14 @@ export class AuthService {
         //hash
         const hashedPassword = await bcrypt.hash(body.password, 10);
         //create and save user
-        const user = {
+        let user = {
             email: body.email,
             password: hashedPassword, 
-            role: { id: body.roleId }, 
+            role: { id: body.roleId } as any, 
         } as User;
-        await this.repo.save(user);
+         user = await this.repo.save(user); 
 
-        const userToken = await this.createToken(user.email)
+        const userToken = await this.createToken(user) 
         return {
             userToken,
             user: { id: user.id, email: user.email}

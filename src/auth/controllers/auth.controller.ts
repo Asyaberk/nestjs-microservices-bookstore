@@ -1,4 +1,4 @@
-import { Body, ClassSerializerInterceptor, Controller, Get, Post, Res, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Get, HttpCode, Post, Res, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
 import { CreateUserDto } from '../../users/dtos/create-user.dto';
 import { LoginUserDto } from '../../users/dtos/login-user.dto';
@@ -18,6 +18,7 @@ export class AuthController {
 
     //register function
     @Post('/register')
+    @HttpCode(201)
     @ApiOperation({ summary: "Register a new user" })
     @ApiCreatedResponse({
         description: "User registered successfully.",
@@ -44,6 +45,7 @@ export class AuthController {
 
     //login function
     @Post('/login')
+    @HttpCode(200)
     @ApiOperation({ summary: "User login" })
     @ApiBody({ type: LoginUserDto })
     @ApiOkResponse({
@@ -71,6 +73,7 @@ export class AuthController {
 
     //logout function
     @Post('/logout')
+    @HttpCode(200)
     @ApiOperation({ summary: "User logout" })
     @ApiOkResponse({
         description: "User logged out successfully.",
@@ -94,6 +97,7 @@ export class AuthController {
 
     //check current user to test login logout function
     @Get('/whoami')
+    @HttpCode(200)
     @ApiOperation({ summary: "Get current authenticated user" })
     @ApiOkResponse({
         description: "Returns the details of the currently logged-in user.",
