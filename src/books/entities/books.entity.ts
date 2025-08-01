@@ -15,6 +15,10 @@ export class Book{
     @Column()
     publishedYear: number;
 
+    //for rental 
+    @Column({ default: true })
+    available: boolean;
+
     //control role insert from terminal 
     @AfterInsert()
     logInsert() {

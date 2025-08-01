@@ -9,6 +9,8 @@ import { User } from './users/entities/users.entity';
 import { Role } from './roles/entities/roles.entity';
 import { BookModule } from './books/book.module';
 import { Book } from './books/entities/books.entity';
+import { LibraryModule } from './library/library.module';
+import { Rental } from './library/entities/rental.entity';
 
 // default db options(from nestjs documentation)
 const defaultOptions = {
@@ -27,9 +29,11 @@ const defaultOptions = {
     TypeOrmModule.forRoot({
       ...defaultOptions,
       database: 'dbpostgre',
-      entities: [User, Role, Book],
+      entities: [User, Role, Book, Rental],
     }),
 
+    /* 
+    //I WONT USE THIS DB CONNECTION RN, I MAY USE IT AFTER PRACTICING MICROSERVICES
     //dont care this import
     //second database whit a name librarydb (i may use later, just added the connection)
     TypeOrmModule.forRoot({
@@ -37,12 +41,13 @@ const defaultOptions = {
       ...defaultOptions,
       database: 'librarydb',
       entities: [],
-    }),
+    }), */
 
     AuthModule,
     UsersModule,
     RolesModule,
-    BookModule],
+    BookModule,
+    LibraryModule],
   controllers: [AppController],
   providers: [AppService],
 })
