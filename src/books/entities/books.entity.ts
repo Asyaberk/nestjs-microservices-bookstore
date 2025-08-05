@@ -13,7 +13,7 @@ export class Book{
     author: string;
 
     @Column()
-    publishedYear: number;
+    publishedyear: number;
 
     //for rental 
     @Column({ default: true })

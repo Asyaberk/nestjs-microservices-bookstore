@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, HttpCode, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { BookService } from '../services/book.service';
 import { Book } from '../entities/books.entity';
 import { CreateBookDto } from '../dtos/create-book.dto';
@@ -13,6 +13,8 @@ import { ApiBadRequestResponse, ApiBearerAuth, ApiForbiddenResponse, ApiOkRespon
 export class BookController {
     constructor(private readonly booksService: BookService) { }
 
+    /*
+//I commented this block of code because i wrote a similar endpoint in library service class
     //all users functions
     //list all the books
     @Get()
@@ -32,7 +34,7 @@ export class BookController {
     })
     async getAllBooks(): Promise<Book[]> { 
         return this.booksService.findAll();
-    }
+    } */
 
     //admin functions
     //we use guards (auth and roles) that we set earlier

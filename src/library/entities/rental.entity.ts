@@ -1,6 +1,6 @@
-import { Book } from "src/books/entities/books.entity";
-import { User } from "src/users/entities/users.entity";
-import { AfterInsert, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Book } from "../../books/entities/books.entity";
+import { User } from "../../users/entities/users.entity";
+import { AfterInsert, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('rental')
 export class Rental {
@@ -8,18 +8,17 @@ export class Rental {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => User, (user) => user.id, { eager: true })
-    user: User;
-
-    @ManyToOne(() => Book, (book) => book.id, { eager: true })
+    //foreign keys(book and users id)
+    @ManyToOne(() => Book, { eager: false })
+    @JoinColumn({ name: 'bookId' })
     book: Book;
 
-    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-    rentDate: Date;
+    @ManyToOne(() => User, { eager: false })
+    @JoinColumn({ name: 'userId' })
+    user: User;
 
-    /* //i may add this later for practicing kafka with countdown rental date 
-    @Column({ type: 'timestamp' })
-    endDate: Date; */
+    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+    rentdate: Date;
 
     @AfterInsert()
     logInsert() {

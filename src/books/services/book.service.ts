@@ -13,7 +13,7 @@ export class BookService {
         return this.bookRepository.find();
     }
     
-    //(admin)(going to be updated!)
+    //(admin)
     create(body: CreateBookDto) {
         return this.bookRepository.save(body);
     }
