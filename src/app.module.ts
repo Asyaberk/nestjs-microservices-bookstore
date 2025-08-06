@@ -18,7 +18,7 @@ const defaultOptions = {
   port: 5432,
   username: 'asya',
   password: 'Asya1234',
-  host: 'localhost',
+  host: 'db',
   synchronize: true,
 };
 
