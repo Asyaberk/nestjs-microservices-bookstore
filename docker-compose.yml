@@ -6,13 +6,13 @@ services:
      - POSTGRES_USER=${DB_USERNAME}
      - POSTGRES_PASSWORD=${DB_PASSWORD}
      - POSTGRES_DB=${DB_DATABASE}
-    container_name: nestjs-user-project-postgres
+    container_name: nestjs-project-postgres
     volumes:
      - ./pgdata:/var/lib/postgresql/data
     ports:
      - "${DB_PORT}:5432"
     networks:
-     - nestjs-user-project-net
+     - nestjs-project-net
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U asya -d dbpostgre"]
       interval: 10s
@@ -22,7 +22,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: nestjs-user-project-app
+    container_name: nestjs-project-app
     environment:
       - PORT=${PORT}
     ports:
@@ -34,7 +34,7 @@ services:
       - .:/app
       - /app/node_modules
     networks:
-      - nestjs-user-project-net
+      - nestjs-project-net
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/healthcheck"]
       interval: 10s
@@ -44,7 +44,7 @@ services:
   pgadmin:
     image: dpage/pgadmin4
     restart: always
-    container_name: nestjs-user-project-pgadmin
+    container_name: nestjs-project-pgadmin
     environment:
       - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
       - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
@@ -53,16 +53,16 @@ services:
     depends_on:
       - db
     networks:
-      - nestjs-user-project-net
+      - nestjs-project-net
   
   redis:
     image: redis
-    container_name: nestjs-user-project-redis
+    container_name: nestjs-project-redis
     ports:
       - "${REDIS_PORT}:${REDIS_PORT}"
     restart: always
     networks:
-      - nestjs-user-project-net
+      - nestjs-project-net
     healthcheck:
       test: ['CMD', 'redis-cli', 'ping']
       interval: 10s
@@ -70,5 +70,5 @@ services:
       retries: 3
 
 networks:
-  nestjs-user-project-net:
+  nestjs-project-net:
     driver: bridge
