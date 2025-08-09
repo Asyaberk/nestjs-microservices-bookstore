@@ -11,44 +11,44 @@ import { BookModule } from './books/book.module';
 import { Book } from './books/entities/books.entity';
 import { LibraryModule } from './library/library.module';
 import { Rental } from './library/entities/rental.entity';
-
-// default db options(from nestjs documentation)
-const defaultOptions = {
-  type: 'postgres' as const,
-  port: 5432,
-  username: 'asya',
-  password: 'Asya1234',
-  host: 'db',
-  synchronize: true,
-};
+import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { ConfigModule } from '@nestjs/config';
 
 //PostgreSQL imports
 @Module({
   imports: [
-    //default database connection: nestjs-db
+    ConfigModule.forRoot({ isGlobal: true }),
+
+    //default database connection
+    //i hid the sensitive data. they are in .env file
     TypeOrmModule.forRoot({
-      ...defaultOptions,
-      database: 'dbpostgre',
+      type: 'postgres' as const,
+      port: Number(process.env.DB_PORT ?? 5432),
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      host: process.env.DB_HOST,
+      synchronize: true,
+      database: process.env.DB_DATABASE,
       entities: [User, Role, Book, Rental],
     }),
-
-    /* 
-    //I WONT USE THIS DB CONNECTION RN, I MAY USE IT AFTER PRACTICING MICROSERVICES
-    //dont care this import
-    //second database whit a name librarydb (i may use later, just added the connection)
-    TypeOrmModule.forRoot({
-      name: 'libraryConnection',
-      ...defaultOptions,
-      database: 'librarydb',
-      entities: [],
-    }), */
 
     AuthModule,
     UsersModule,
     RolesModule,
     BookModule,
-    LibraryModule],
+    LibraryModule,
+
+    //for now in-memory cache to practisch, before getting into redis
+    CacheModule.register(),
+  ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: CacheInterceptor,
+    },
+  ],
 })
 export class AppModule {}
