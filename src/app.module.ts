@@ -11,17 +11,23 @@ import { BookModule } from './books/book.module';
 import { Book } from './books/entities/books.entity';
 import { LibraryModule } from './library/library.module';
 import { Rental } from './library/entities/rental.entity';
-import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
-import { APP_INTERCEPTOR } from '@nestjs/core';
-import { ConfigModule } from '@nestjs/config';
+import { CacheModule } from '@nestjs/cache-manager';
+import { ConfigModule } from '@nestjs/config'; 
 
-//PostgreSQL imports
+/*
+REDIS SETTING UP
+docker run --name redis -p 6379:6379 -d redis 
+docker exec -it redis redis-cli
+ping pong ok
+SET myKey "hello redis"
+GET myKey
+*/
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
 
-    //default database connection
-    //i hid the sensitive data. they are in .env file
+    //postgre connection
     TypeOrmModule.forRoot({
       type: 'postgres' as const,
       port: Number(process.env.DB_PORT ?? 5432),
@@ -33,22 +39,20 @@ import { ConfigModule } from '@nestjs/config';
       entities: [User, Role, Book, Rental],
     }),
 
+    //WORKING WITH CACHE STORE
+    CacheModule.register({
+      //in seconds
+      ttl: 10_000,
+      isGlobal: true,
+    }),
+
     AuthModule,
     UsersModule,
     RolesModule,
     BookModule,
     LibraryModule,
-
-    //for now in-memory cache to practisch, before getting into redis
-    CacheModule.register(),
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: CacheInterceptor,
-    },
-  ],
+  providers: [AppService],
 })
 export class AppModule {}
