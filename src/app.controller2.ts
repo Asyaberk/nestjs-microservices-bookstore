@@ -18,9 +18,9 @@ export class AppController2 {
   }
 
   //or indivual cache only for this method
-  @UseInterceptors(CacheInterceptor)
+  //@UseInterceptors(CacheInterceptor)
   //we can also override global caching
-  @CacheTTL(60_000)
+  //@CacheTTL(60_000)
   @Get('/foo')
   getData2() {
     return this.appService.getData2();

@@ -21,6 +21,7 @@
     "test:e2e:watch": "jest --config ./test/jest-e2e.json --watch"
   },
   "dependencies": {
+    "@keyv/redis": "^5.1.0",
     "@nestjs/cache-manager": "^3.0.1",
     "@nestjs/common": "^11.1.6",
     "@nestjs/config": "^4.0.2",
@@ -31,9 +32,11 @@
     "@nestjs/swagger": "^11.2.0",
     "@nestjs/typeorm": "^11.0.0",
     "bcrypt": "^6.0.0",
+    "cachable": "^1.0.0",
     "cache-manager": "^7.1.1",
     "cache-manager-redis-store": "^3.0.1",
     "cache-manager-redis-yet": "^5.1.5",
+    "cacheable": "^1.10.3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
     "cookie-parser": "^1.4.7",

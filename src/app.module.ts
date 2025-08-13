@@ -15,6 +15,9 @@ import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
 import { ConfigModule } from '@nestjs/config'; 
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { AppController2 } from './app.controller2';
+import { createKeyv } from '@keyv/redis';
+import { Keyv } from 'keyv';
+import { CacheableMemory } from 'cacheable';
 
 @Module({
   imports: [
@@ -26,23 +29,43 @@ import { AppController2 } from './app.controller2';
       port: Number(process.env.DB_PORT ?? 5432),
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
-      //i commented this docker db conneciton because 
-      //i am using npm run start:dev 
+      //i commented this docker db conneciton because
+      //i am using npm run start:dev
       //just for now to compile faster and reduce storage(i do not have enough)
       //it needs its local db host name which is localhost
       //host: process.env.DB_HOST,
       host: 'localhost',
-      synchronize: true, 
+      synchronize: true,
       database: process.env.DB_DATABASE,
       entities: [User, Role, Book, Rental],
     }),
 
     //WORKING WITH CACHE STORE(global caching)
-    //global defauşt config
-    CacheModule.register({
-      //in seconds
-      ttl: 10_000,
+    //global default config
+    // CacheModule.register({
+    //   //in seconds
+    //   ttl: 10_000,
+    //   isGlobal: true,
+    // }),
+
+    //USING REDIS FOR CACHING
+    //npm install @keyv/redis (nestjs documentation)
+    //npm install cacheable
+    //now go redis cli to check if it worked for keys
+    //redis-cli
+    //SCAN 0
+    CacheModule.registerAsync({
       isGlobal: true,
+      useFactory: async () => {
+        return { 
+          stores: [
+            new Keyv({
+              store: new CacheableMemory({ ttl: 60000, lruSize: 5000 }),
+            }),
+            createKeyv('redis://localhost:6379'),
+          ],
+        };
+      },
     }),
 
     AuthModule,
@@ -53,16 +76,16 @@ import { AppController2 } from './app.controller2';
   ],
   controllers: [
     AppController,
-    //for demo 
-    AppController2
+    //for demo
+    AppController2,
   ],
   providers: [
     AppService,
     //AUTO CACHING RESPONSE
-    // {
-    //   provide: APP_INTERCEPTOR,
-    //   useClass: CacheInterceptor,
-    // },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: CacheInterceptor,
+    },
   ],
 })
 export class AppModule {}
