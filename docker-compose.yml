@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres
+    image: postgres:16-alpine
     restart: always
     environment:
      - POSTGRES_USER=${DB_USERNAME}
@@ -11,10 +11,9 @@ services:
      - ./pgdata:/var/lib/postgresql/data
     ports:
      - "${DB_PORT}:5432"
-    networks:
-     - nestjs-project-net
+    networks: [nestjs-project-net]
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U asya -d dbpostgre"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -25,16 +24,23 @@ services:
     container_name: nestjs-project-app
     environment:
       - PORT=${PORT}
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_DATABASE=${DB_DATABASE}
+      - REDIS_URL=redis://redis:6379
     ports:
       - "${PORT}:${PORT}"
     depends_on:
-      - db
-      - redis
+      db:
+        condition: service_started
+      redis:
+        condition: service_started
     volumes:
       - .:/app
       - /app/node_modules
-    networks:
-      - nestjs-project-net
+    networks: [nestjs-project-net]
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/healthcheck"]
       interval: 10s
@@ -42,7 +48,7 @@ services:
       retries: 3
 
   pgadmin:
-    image: dpage/pgadmin4
+    image: dpage/pgadmin4:9.6
     restart: always
     container_name: nestjs-project-pgadmin
     environment:
@@ -52,19 +58,17 @@ services:
       - "${PGADMIN_HOST_PORT}:${PGADMIN_CONTAINER_PORT}"
     depends_on:
       - db
-    networks:
-      - nestjs-project-net
+    networks: [nestjs-project-net]
   
   redis:
-    image: redis
+    image: redis:7-alpine
     container_name: nestjs-project-redis
     ports:
       - "${REDIS_PORT}:${REDIS_PORT}"
     restart: always
-    networks:
-      - nestjs-project-net
+    networks: [nestjs-project-net]
     healthcheck:
-      test: ['CMD', 'redis-cli', 'ping']
+      test: ["CMD", "redis-cli", "ping"]
       interval: 10s
       timeout: 5s
       retries: 3
