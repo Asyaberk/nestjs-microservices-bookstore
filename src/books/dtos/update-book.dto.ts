@@ -26,5 +26,5 @@ export class UpdateBookDto {
         description: 'Updated year of publication',
         example: 2025
     })
-    publishedYear?: number;
+    publishedyear?: number;
 }

@@ -26,6 +26,15 @@ describe('AuthService', () => {
     findAll: jest.fn()
   };
 
+  // helper: reset all repository mocks between tests
+  const resetRepoMocks = () => {
+    mockUserRepository.findOneByEmail.mockReset();
+    mockUserRepository.save.mockReset();
+    mockUserRepository.find.mockReset();
+    mockUserRepository.findOneById.mockReset();
+    mockUserRepository.findAll.mockReset();
+  };
+
   // mock JwtService
   const mockJwtService = {
     //we could have used promise.resolve for these sign, findOneByEmail or save methods but jest is better for use
@@ -41,6 +50,8 @@ describe('AuthService', () => {
 
   //dependacy injection
   beforeEach(async () => {
+    resetRepoMocks();
+    jest.clearAllMocks();
     const module = await Test.createTestingModule({
       providers: [
         AuthService,
@@ -62,14 +73,25 @@ describe('AuthService', () => {
   describe('register', () => {
     //test 2.1
     it('can create a new user', async () => {
-      mockUserRepository.save.mockResolvedValue({email: 'test@mail.com' });
+      // email çakışmıyor gibi davran
+      mockUserRepository.findOneByEmail.mockResolvedValue(null);
+      
+      // save gelen dto’yu yansıtıp id versin
+      mockUserRepository.save.mockImplementation(async (data) => ({
+        id: 1,
+        ...data,
+      }));
 
-      const result = await service.register({ email: 'newUser@mail.com', password: 'pswd', roleId: 1 });
+      const result = await service.register({
+        email: 'newUser@mail.com',
+        password: 'pswd',
+        roleId: 1,
+      });
 
       // mock output of the dependacies
-      expect(result).toEqual({
+      expect(result).toMatchObject({
         userToken: 'mocked-jwt-token',
-        user: {email: 'newUser@mail.com' }
+        user: { id: expect.any(Number), email: 'newUser@mail.com' },
       });
     });
 

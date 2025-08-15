@@ -27,12 +27,7 @@ import { CacheableMemory } from 'cacheable';
       port: Number(process.env.DB_PORT ?? 5432),
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
-      //i commented this docker db conneciton because
-      //i am using npm run start:dev
-      //just for now to compile faster and reduce storage(i do not have enough)
-      //it needs its local db host name which is localhost
       host: process.env.DB_HOST,
-      //host: 'localhost',
       synchronize: true,
       database: process.env.DB_DATABASE,
       entities: [User, Role, Book, Rental],
@@ -41,12 +36,7 @@ import { CacheableMemory } from 'cacheable';
     //docker ps
     //docker compose down
 
-    //USING REDIS FOR CACHING
-    //npm install @keyv/redis (nestjs documentation)
-    //npm install cacheable
-    //now go redis cli to check if it worked for keys
-    //redis-cli
-    //SCAN 0
+    //Redis caching
     CacheModule.registerAsync({
       isGlobal: true,
       useFactory: async () => {
@@ -68,13 +58,6 @@ import { CacheableMemory } from 'cacheable';
     LibraryModule,
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-    //AUTO CACHING RESPONSE
-    // {
-    //   provide: APP_INTERCEPTOR,
-    //   useClass: CacheInterceptor,
-    // },
-  ],
+  providers: [AppService],
 })
 export class AppModule {}

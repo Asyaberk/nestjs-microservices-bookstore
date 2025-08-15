@@ -1,6 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RolesController } from '../controllers/roles.controller';
 import { RolesService } from '../services/roles.service';
+import { CACHE_MANAGER, CacheInterceptor } from '@nestjs/cache-manager';
+import { Reflector } from '@nestjs/core';
 
 describe('RolesController', () => {
   let controller: RolesController;
@@ -9,13 +11,27 @@ describe('RolesController', () => {
     findAll: jest.fn(),
     create: jest.fn()
   };
+  const mockCache = {
+    get: jest.fn(),
+    set: jest.fn(),
+    del: jest.fn(),
+    reset: jest.fn(),
+  };
+
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [RolesController],
       providers: [
-        { provide: RolesService, useValue: mockRolesService }
-      ]
+        { provide: RolesService, useValue: mockRolesService },
+        { provide: CACHE_MANAGER, useValue: mockCache },
+        Reflector,
+        {
+          // Interceptor’ı devre dışı bırak
+          provide: CacheInterceptor,
+          useValue: { intercept: (_ctx, next) => next.handle() },
+        },
+      ],
     }).compile();
 
     controller = module.get<RolesController>(RolesController);

@@ -37,10 +37,10 @@ describe('BookService', () => {
       const mockBook = { id: 1, title: 'Test Book', author: 'Asya Berk', publishedYear: 2025 };
       mockBookRepository.save.mockResolvedValue(mockBook);
       
-      const result = await service.create({ title: 'Test Book', author: 'Asya Berk', publishedYear: 2025 });
+      const result = await service.create({ title: 'Test Book', author: 'Asya Berk', publishedyear: 2025 });
 
       expect(result).toEqual(mockBook);
-      expect(mockBookRepository.save).toHaveBeenCalledWith({ title: 'Test Book', author: 'Asya Berk', publishedYear: 2025 });
+      expect(mockBookRepository.save).toHaveBeenCalledWith({ title: 'Test Book', author: 'Asya Berk', publishedyear: 2025 });
     });
   });
 
@@ -48,8 +48,8 @@ describe('BookService', () => {
   describe('findAll', () => {
     it('can return a list of books', async () => {
       const mockBooks = [
-        { id: 1, title: 'Book One', author: 'A', publishedYear: 2023 },
-        { id: 2, title: 'Book Two', author: 'B', publishedYear: 2024 }
+        { id: 1, title: 'Book One', author: 'A', publishedyear: 2023 },
+        { id: 2, title: 'Book Two', author: 'B', publishedyear: 2024 }
       ];
       
       mockBookRepository.find.mockResolvedValue(mockBooks);
@@ -65,7 +65,7 @@ describe('BookService', () => {
   describe('update', () => {
     //test4.1
     it('can update a book', async () => {
-      const mockBook = { id: 1, title: 'Test Book', author: 'Asya Berk', publishedYear: 2025 };
+      const mockBook = { id: 1, title: 'Test Book', author: 'Asya Berk', publishedyear: 2025 };
       mockBookRepository.update.mockResolvedValue(mockBook);
 
       const result = await service.update(1, { title: 'Updated Test Book' });
@@ -91,7 +91,7 @@ describe('BookService', () => {
 
     //test5.1
     it('can remove a book', async () => {
-      const mockBook = { id: 1, title: 'Test Book', author: 'Asya Berk', publishedYear: 2025 };
+      const mockBook = { id: 1, title: 'Test Book', author: 'Asya Berk', publishedyear: 2025 };
       mockBookRepository.remove.mockResolvedValue(mockBook);
 
       const result = await service.remove(1);
