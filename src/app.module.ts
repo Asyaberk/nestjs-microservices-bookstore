@@ -12,14 +12,17 @@ import { Book } from './books/entities/books.entity';
 import { LibraryModule } from './library/library.module';
 import { Rental } from './library/entities/rental.entity';
 import { CacheModule } from '@nestjs/cache-manager';
-import { ConfigModule } from '@nestjs/config'; 
 import { createKeyv } from '@keyv/redis';
 import { Keyv } from 'keyv';
 import { CacheableMemory } from 'cacheable';
+import { AppConfigModule } from '@app/config';
+import { HealthController } from './health.controller';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    //ConfigModule.forRoot({ isGlobal: true }),
+    //i made my own config lib
+    AppConfigModule,
 
     //postgre connection
     TypeOrmModule.forRoot({
@@ -45,7 +48,7 @@ import { CacheableMemory } from 'cacheable';
             new Keyv({
               store: new CacheableMemory({ ttl: 10_000, lruSize: 5000 }),
             }),
-            createKeyv('redis://localhost:6379'),
+            createKeyv(process.env.REDIS_URL || 'redis://localhost:6379'),
           ],
         };
       },
@@ -57,7 +60,7 @@ import { CacheableMemory } from 'cacheable';
     BookModule,
     LibraryModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, HealthController],
   providers: [AppService],
 })
 export class AppModule {}
