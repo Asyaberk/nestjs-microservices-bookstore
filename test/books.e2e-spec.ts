@@ -32,7 +32,7 @@ describe('BookController (e2e)', () => {
     await app.close();
   });
 
-  describe('/books (GET)', () => {
+  describe('/library/books (GET)', () => {
     it('can return a list of all books', async () => {
       //login as admin because only admins can create book
       const loginRes = await request(app.getHttpServer())
@@ -42,7 +42,7 @@ describe('BookController (e2e)', () => {
       const cookie = loginRes.headers['set-cookie'][0];
       
       // create a test book
-      const dto = { title: 'e2e Test Book', author: 'Test Author', publishedYear: 2025 };
+      const dto = { title: 'e2e Test Book', author: 'Test Author', publishedyear: 2025 };
       await request(app.getHttpServer())
         .post('/books/create')
         .set('Cookie', cookie)
@@ -51,7 +51,8 @@ describe('BookController (e2e)', () => {
 
       //all users can see the list of books
       const result = await request(app.getHttpServer())
-        .get('/books')
+        .get('/library/books')
+        .set('Cookie', cookie)
         .expect(200);
       
       expect(result.body).toEqual(
@@ -72,7 +73,7 @@ describe('BookController (e2e)', () => {
       const cookie = loginRes.headers['set-cookie'][0];
       
       //create book
-      const dto = { title: 'e2e Test Book', author: 'Test Author', publishedYear: 2025 };
+      const dto = { title: 'e2e Test Book', author: 'Test Author', publishedyear: 2025 };
         
       const result = await request(app.getHttpServer())
         .post('/books/create')
@@ -98,7 +99,7 @@ describe('BookController (e2e)', () => {
       const createRes = await request(app.getHttpServer())
         .post('/books/create')
         .set('Cookie', cookie)
-        .send({ title: 'e2e Test Book', author: 'Test Author', publishedYear: 2025 })
+        .send({ title: 'e2e Test Book', author: 'Test Author', publishedyear: 2025 })
         .expect(201);
       const bookId = createRes.body.id;
       
@@ -126,7 +127,7 @@ describe('BookController (e2e)', () => {
       const createRes = await request(app.getHttpServer())
         .post('/books/create')
         .set('Cookie', cookie)
-        .send({ title: 'e2e Test Book', author: 'Test Author', publishedYear: 2025 })
+        .send({ title: 'e2e Test Book', author: 'Test Author', publishedyear: 2025 })
         .expect(201);
       const bookId = createRes.body.id;
 

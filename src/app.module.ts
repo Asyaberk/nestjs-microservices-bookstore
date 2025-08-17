@@ -11,10 +11,8 @@ import { BookModule } from './books/book.module';
 import { Book } from './books/entities/books.entity';
 import { LibraryModule } from './library/library.module';
 import { Rental } from './library/entities/rental.entity';
-import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
+import { CacheModule } from '@nestjs/cache-manager';
 import { ConfigModule } from '@nestjs/config'; 
-import { APP_INTERCEPTOR } from '@nestjs/core';
-import { AppController2 } from './app.controller2';
 import { createKeyv } from '@keyv/redis';
 import { Keyv } from 'keyv';
 import { CacheableMemory } from 'cacheable';
@@ -29,38 +27,23 @@ import { CacheableMemory } from 'cacheable';
       port: Number(process.env.DB_PORT ?? 5432),
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
-      //i commented this docker db conneciton because
-      //i am using npm run start:dev
-      //just for now to compile faster and reduce storage(i do not have enough)
-      //it needs its local db host name which is localhost
-      //host: process.env.DB_HOST,
-      host: 'localhost',
+      host: process.env.DB_HOST,
       synchronize: true,
       database: process.env.DB_DATABASE,
       entities: [User, Role, Book, Rental],
     }),
+    //docker compose up -d --build
+    //docker ps
+    //docker compose down
 
-    //WORKING WITH CACHE STORE(global caching)
-    //global default config
-    // CacheModule.register({
-    //   //in seconds
-    //   ttl: 10_000,
-    //   isGlobal: true,
-    // }),
-
-    //USING REDIS FOR CACHING
-    //npm install @keyv/redis (nestjs documentation)
-    //npm install cacheable
-    //now go redis cli to check if it worked for keys
-    //redis-cli
-    //SCAN 0
+    //Redis caching
     CacheModule.registerAsync({
       isGlobal: true,
       useFactory: async () => {
-        return { 
+        return {
           stores: [
             new Keyv({
-              store: new CacheableMemory({ ttl: 60000, lruSize: 5000 }),
+              store: new CacheableMemory({ ttl: 10_000, lruSize: 5000 }),
             }),
             createKeyv('redis://localhost:6379'),
           ],
@@ -74,18 +57,7 @@ import { CacheableMemory } from 'cacheable';
     BookModule,
     LibraryModule,
   ],
-  controllers: [
-    AppController,
-    //for demo
-    AppController2,
-  ],
-  providers: [
-    AppService,
-    //AUTO CACHING RESPONSE
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: CacheInterceptor,
-    },
-  ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

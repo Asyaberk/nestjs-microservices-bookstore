@@ -1,8 +1,9 @@
-import { Body, Controller, Get, HttpCode, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post, UseInterceptors } from '@nestjs/common';
 import { RolesService } from '../services/roles.service';
 import { Role } from '../entities/roles.entity';
 import { CreateRoleDto } from '../dtos/create-role.dto';
 import { ApiOperation, ApiOkResponse, ApiBadRequestResponse, ApiTags, ApiCreatedResponse } from '@nestjs/swagger';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('roles')
 @ApiTags('Roles')
@@ -11,6 +12,7 @@ export class RolesController {
  
     //list all the roles
     @Get()
+    @UseInterceptors(CacheInterceptor)
     @HttpCode(200)
     @ApiOperation({ summary: 'Fetch all roles' })
     @ApiOkResponse({
