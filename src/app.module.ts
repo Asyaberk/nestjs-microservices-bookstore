@@ -17,9 +17,13 @@ import { Keyv } from 'keyv';
 import { CacheableMemory } from 'cacheable';
 import { AppConfigModule } from '@app/config';
 import { HealthController } from './health.controller';
+import { KafkaModule } from '@app/kafka';
 
 @Module({
   imports: [
+    //add kafka
+    KafkaModule,
+    
     //ConfigModule.forRoot({ isGlobal: true }),
     //i made my own config lib
     AppConfigModule,
