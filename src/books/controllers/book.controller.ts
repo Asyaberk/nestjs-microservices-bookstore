@@ -13,29 +13,6 @@ import { ApiBadRequestResponse, ApiBearerAuth, ApiForbiddenResponse, ApiOkRespon
 export class BookController {
     constructor(private readonly booksService: BookService) { }
 
-    /*
-//I commented this block of code because i wrote a similar endpoint in library service class
-    //all users functions
-    //list all the books
-    @Get()
-    @HttpCode(200)
-    @ApiOperation({ summary: 'Get all books' })
-    @ApiOkResponse({
-        description: 'Returns a list of all books.',
-        schema: {
-            type: 'array',
-            items: {
-                example: [
-                    { id: 1, title: 'Atomic Habits', author: 'James Clear', publishedYear: 2018 },
-                    { id: 2, title: 'Clean Code', author: 'Robert C. Martin', publishedYear: 2008 }
-                ]
-            }
-        }
-    })
-    async getAllBooks(): Promise<Book[]> { 
-        return this.booksService.findAll();
-    } */
-
     //admin functions
     //we use guards (auth and roles) that we set earlier
     @UseGuards(AuthGuard('jwt'), RolesGuard)

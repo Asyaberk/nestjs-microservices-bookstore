@@ -18,12 +18,13 @@ import { CacheableMemory } from 'cacheable';
 import { AppConfigModule } from '@app/config';
 import { HealthController } from './health.controller';
 import { KafkaModule } from '@app/kafka';
+import { TestConsumer } from './consumer';
 
 @Module({
   imports: [
     //add kafka
     KafkaModule,
-    
+
     //ConfigModule.forRoot({ isGlobal: true }),
     //i made my own config lib
     AppConfigModule,
@@ -41,6 +42,7 @@ import { KafkaModule } from '@app/kafka';
     }),
     //docker compose up -d --build
     //docker ps
+    //docker logs -f nestjs-project-app
     //docker compose down
 
     //Redis caching
@@ -65,6 +67,6 @@ import { KafkaModule } from '@app/kafka';
     LibraryModule,
   ],
   controllers: [AppController, HealthController],
-  providers: [AppService],
+  providers: [AppService, TestConsumer],
 })
 export class AppModule {}
