@@ -72,6 +72,32 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    
+  zookeeper:
+    image: wurstmeister/zookeeper:latest
+    ports:
+      - "2181:2181"
+    networks: [nestjs-project-net]
+
+  kafka:
+    image: wurstmeister/kafka:2.11-1.1.1
+    ports:
+      - "9092:9092"
+    links:
+      - zookeeper
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: ${HOST_IP}
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181 
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+      KAFKA_DELETE_TOPIC_ENABLE: 'true'
+      KAFKA_CREATE_TOPICS: "topic-test"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks: [nestjs-project-net]
+    
+  #KAFKA MOBİL ERİYE BAĞLANINCA ÇALIŞIYOR VE BUNU ÖNCE EXPORTLAMAN LAZIM:
+  #export HOST_IP=$(ifconfig | grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}" | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d: | head -n1)
+  #docker-compose up
 
 networks:
   nestjs-project-net:
