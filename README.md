@@ -21,78 +21,167 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+# 📚 NestJS User & Library Management Project
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+[![NestJS](https://img.shields.io/badge/NestJS-Backend-red)](https://nestjs.com/)  
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-blue)](https://www.postgresql.org/)  
+[![Redis](https://img.shields.io/badge/Redis-Cache-green)](https://redis.io/)  
+[![Kafka](https://img.shields.io/badge/Kafka-Event--Streaming-black)](https://kafka.apache.org/)  
+[![Docker](https://img.shields.io/badge/Docker-Compose-2496ED)](https://www.docker.com/)
 
-## Project setup
+---
 
+## 🔎 Overview
+This project was built as part of my learning journey with NestJS and backend systems. The main goal was to simulate a small-scale library management system, but enriched with real-world patterns: authentication, caching, event-driven messaging, and container orchestration.
+
+It is a **full-stack backend system** built with **NestJS**, designed for managing users, roles, and books, while also demonstrating modern backend practices:  
+
+- **PostgreSQL** → relational database for persistent storage  
+- **Redis** → caching layer for performance optimization  
+- **Kafka** → event-driven architecture for handling book rentals/returns  
+- **pgAdmin** → graphical database management tool  
+- **Swagger** → interactive API documentation  
+- **Docker Compose** → single-command container orchestration  
+
+👉 The goal is to provide a **modular, production-like backend** where each concept (authentication, caching, messaging, persistence) is implemented in its own NestJS module.
+
+---
+
+## ⚙️ Installation & Setup
+
+### 1. Clone the Repository
 ```bash
-$ npm install
+git clone https://github.com/Asyaberk/nestjs-user-project.git
+cd nestjs-user-project
 ```
 
-## Compile and run the project
-
+### 2. Environment Variables
+Create a `.env` file in the root directory:
 ```bash
-# development
-$ npm run start
+PORT=3000
 
-# watch mode
-$ npm run start:dev
+DB_HOST=
+DB_USERNAME=
+DB_PASSWORD=
+DB_PORT=
+DB_DATABASE=
 
-# production mode
-$ npm run start:prod
+PGADMIN_EMAIL=admin@admin.com
+PGADMIN_PASSWORD=123
+PGADMIN_HOST_PORT=5050
+PGADMIN_CONTAINER_PORT=80
+
+REDIS_PORT=6379
+REDIS_HOST=redis
+REDIS_URL=redis://redis:6379
+
+KAFKA_BROKERS=kafka:9092
+KAFKA_TOPIC=topic-test
 ```
 
-## Run tests
-
+### 3. Kafka Setup – Export Host IP
+Create a `.env` file in the root directory:
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+export HOST_IP=$(ifconfig | grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}" | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d: | head -n1)
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
+### 4. Start Services
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+docker-compose up -d --build
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### 5. Monitor Logs
+```bash
+docker logs -f nestjs-project-app
+```
+This ensures all services (**Postgres, Redis, Kafka, App**) are healthy and running.
 
-## Resources
+---
 
-Check out a few resources that may come in handy when working with NestJS:
+### 🌐 Available Services
+- **API** → http://localhost:3000
+- **Swagger Docs** → http://localhost:3000/api
+- **pgAdmin** → http://localhost:5050 (login with admin@admin.com / 123)
+- **Postgres** → localhost:5432
+- **Redis** → localhost:6379
+- **Kafka** → localhost:9092
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+---
 
-## Support
+### 🔎 Health Check
+```bash
+curl http://localhost:3000/healthcheck
+```
+**Expected Response:**
+```
+{ "status": "ok" }
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+---
 
-## Stay in touch
+### 📖 API Documentation (Swagger)
+Once the app is running, visit:
+→ http://localhost:3000/api
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Here you can:
+- Explore available endpoints
+- Send test requests directly from the browser
+- View request/response schemas
 
-## License
+---
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+### 📦 Project Modules
+- **Auth Module** → Registration, login, logout (JWT in HTTP-only cookies).
+- **Users Module** → Manage users and their roles.
+- **Roles Module** → Define role-based access.
+- **Books Module** → CRUD operations for books.
+- **Library Module** → Borrowing (rent) and returning (return) books.
+- **Kafka Module** → Publishes events like `LIBRARY_RENT_CREATED` and consumes them for logging.
+- **Redis Module** → Used for caching frequent queries (e.g., user lists, books).
+
+---
+
+### 📨 Kafka Demo
+**Rent a Book (Producer Event)**
+```bash
+curl -X POST http://localhost:3000/library/rent -H "Content-Type: application/json" -d '{"bookId": 1, "userId": 1}'
+```
+Consumer Log Output:
+```
+Received event: LIBRARY_RENT_CREATED
+```
+
+**Return a Book**
+```bash
+curl -X POST http://localhost:3000/library/return/1
+```
+Consumer Log Output:
+```
+Received event: LIBRARY_RENT_RETURNED
+```
+
+---
+
+### 🗄️ Redis Demo
+Check cache content:
+```bash
+docker exec -it nestjs-project-redis redis-cli
+> KEYS *
+```
+
+---
+
+### 🛠 Development Mode
+To run only the NestJS app (without Docker containers):
+```bash
+npm install
+npm run start:dev
+```
+
+---
+
+### ✅ Conclusion
+This project demonstrates how **NestJS integrates with PostgreSQL, Redis, and Kafka**, orchestrated
+via Docker Compose.
+It is a **great starting point** for anyone wanting to learn **microservice-related patterns** and
+**event-driven architectures** while keeping everything structured under NestJS modules.
