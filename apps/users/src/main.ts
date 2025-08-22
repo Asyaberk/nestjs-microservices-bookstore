@@ -16,14 +16,12 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-  //then start the application in watch mode
-  //open http://localhost:3000/api
 
   //cookie
   app.use(cookieParser());
 
   app.enableCors({
-    origin: 'http://localhost:3000',
+    origin: 'http://localhost:3040',
     credentials: true,
     exposedHeaders: ['set-cookie'],
   });
@@ -34,6 +32,6 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.USERS_PORT ?? 3040);
 }
 bootstrap();

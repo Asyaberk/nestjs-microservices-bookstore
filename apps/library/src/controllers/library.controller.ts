@@ -24,7 +24,7 @@ import {
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
-import { Roles } from '@app/roles/decorators/roles.decorator';
+import { Roles } from 'apps/roles/src/decorators/roles.decorator';
 import { RolesGuard } from '@app/guards/roles.guard';
 import { KafkaProducerService } from '@app/kafka/services/kafka.producer.service';
 

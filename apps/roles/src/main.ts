@@ -1,12 +1,12 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
-import { BookModule } from './books.module';
+import { RolesModule } from './roles.module';
 import * as cookieParser from 'cookie-parser';
 //swagger
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
-  const app = await NestFactory.create(BookModule);
+  const app = await NestFactory.create(RolesModule);
 
   //for swagger
   const config = new DocumentBuilder()
@@ -21,7 +21,7 @@ async function bootstrap() {
   app.use(cookieParser());
 
   app.enableCors({
-    origin: 'http://localhost:3020',
+    origin: 'http://localhost:3030',
     credentials: true,
     exposedHeaders: ['set-cookie'],
   });
@@ -32,6 +32,6 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
-  await app.listen(process.env.BOOKS_PORT ?? 3020);
+  await app.listen(process.env.ROLES_PORT ?? 3050);
 }
 bootstrap();

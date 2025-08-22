@@ -7,7 +7,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from '@app/strategy/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { UserRepository } from 'apps/users/src/repositories/users.repository';
-import { RolesModule } from '@app/roles/roles.module';
+import { RolesModule } from 'apps/roles/src/roles.module';
 
 @Module({
   //import jwt

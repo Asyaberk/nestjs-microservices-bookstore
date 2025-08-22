@@ -55,10 +55,10 @@
         "libs/kafka/src/*"
       ],
       "@app/roles": [
-        "libs/roles/src"
+        "libs/roleslib/src"
       ],
       "@app/roles/*": [
-        "libs/roles/src/*"
+        "libs/roleslib/src/*"
       ],
       "@app/strategy": [
         "libs/strategy/src"

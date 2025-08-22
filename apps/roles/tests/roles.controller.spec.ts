@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { RolesController } from '../controllers/roles.controller';
-import { RolesService } from '../services/roles.service';
+import { RolesController } from '../src/controllers/roles.controller';
+import { RolesService } from '../src/services/roles.service';
 import { CACHE_MANAGER, CacheInterceptor } from '@nestjs/cache-manager';
 import { Reflector } from '@nestjs/core';
 
