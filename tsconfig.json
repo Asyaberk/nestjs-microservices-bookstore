@@ -18,17 +18,53 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
+      "@app/auth": [
+        "libs/auth/src"
+      ],
+      "@app/auth/*": [
+        "libs/auth/src/*"
+      ],
       "@app/config": [
         "libs/config/src"
       ],
       "@app/config/*": [
         "libs/config/src/*"
       ],
+      "@app/dtos": [
+        "libs/dtos/src"
+      ],
+      "@app/dtos/*": [
+        "libs/dtos/src/*"
+      ],
+      "@app/entities": [
+        "libs/entities/src"
+      ],
+      "@app/entities/*": [
+        "libs/entities/src/*"
+      ],
+      "@app/guards": [
+        "libs/guards/src"
+      ],
+      "@app/guards/*": [
+        "libs/guards/src/*"
+      ],
       "@app/kafka": [
         "libs/kafka/src"
       ],
       "@app/kafka/*": [
         "libs/kafka/src/*"
+      ],
+      "@app/roles": [
+        "libs/roles/src"
+      ],
+      "@app/roles/*": [
+        "libs/roles/src/*"
+      ],
+      "@app/strategy": [
+        "libs/strategy/src"
+      ],
+      "@app/strategy/*": [
+        "libs/strategy/src/*"
       ]
     }
   }

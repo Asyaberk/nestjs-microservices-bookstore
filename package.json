@@ -7,17 +7,17 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"libs/**/*.ts\"",
+    "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "start:prod": "node dist/apps/nestjs-user-project/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch --maxWorkers=1",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "test:e2e": "jest --config ./apps/nestjs-user-project/test/jest-e2e.json",
     "test:e2e:watch": "jest --config ./test/jest-e2e.json --watch"
   },
   "dependencies": {
@@ -102,12 +102,18 @@
     "coverageDirectory": "./coverage",
     "testEnvironment": "node",
     "roots": [
-      "<rootDir>/src/",
-      "<rootDir>/libs/"
+      "<rootDir>/libs/",
+      "<rootDir>/apps/"
     ],
     "moduleNameMapper": {
+      "^@app/auth(|/.*)$": "<rootDir>/libs/auth/src/$1",
       "^@app/config(|/.*)$": "<rootDir>/libs/config/src/$1",
-      "^@app/kafka(|/.*)$": "<rootDir>/libs/kafka/src/$1"
+      "^@app/dtos(|/.*)$": "<rootDir>/libs/dtos/src/$1",
+      "^@app/entities(|/.*)$": "<rootDir>/libs/entities/src/$1",
+      "^@app/guards(|/.*)$": "<rootDir>/libs/guards/src/$1",
+      "^@app/kafka(|/.*)$": "<rootDir>/libs/kafka/src/$1",
+      "^@app/roles(|/.*)$": "<rootDir>/libs/roles/src/$1",
+      "^@app/strategy(|/.*)$": "<rootDir>/libs/strategy/src/$1"
     }
   }
 }
