@@ -1,2 +1,3 @@
 export * from './guards.module';
-export * from './guards.service';
+export * from './auth.guard';
+export * from './roles.guard';

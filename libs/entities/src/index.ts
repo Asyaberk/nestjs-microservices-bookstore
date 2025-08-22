@@ -1,2 +1,5 @@
 export * from './entities.module';
-export * from './entities.service';
+export * from './books.entity';
+export * from './rental.entity';
+export * from './roles.entity';
+export * from './users.entity';

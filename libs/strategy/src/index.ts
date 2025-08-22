@@ -1,2 +1,2 @@
 export * from './strategy.module';
-export * from './strategy.service';
+export * from './jwt.strategy';

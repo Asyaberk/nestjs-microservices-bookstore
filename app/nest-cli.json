@@ -53,10 +53,10 @@
     "auth": {
       "type": "application",
       "root": "app/auth",
-      "entryFile": "main",
+      "entryFile": "index",
       "sourceRoot": "app/auth/src",
       "compilerOptions": {
-        "tsConfigPath": "app/auth/tsconfig.app.json"
+        "tsConfigPath": "app/auth/tsconfig.lib.json"
       }
     },
     "config": {

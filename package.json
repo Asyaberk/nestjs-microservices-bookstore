@@ -8,8 +8,14 @@
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
+    "start:dev": "concurrently -c \"cyan.bold,green.bold,blue.bold,magenta.bold,yellow.bold,white.bold\" \"npm:dev-*\"",
     "start": "nest start",
-    "start:dev": "nest start --watch",
+    "dev-gateway": "nest start --watch api-gateway",
+    "dev-books": "nest start --watch books",
+    "dev-library": "nest start --watch library",
+    "dev-roles": "nest start --watch roles",
+    "dev-users": "nest start --watch users",
+    "dev-auth": "nest start --watch auth",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/apps/nestjs-user-project/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
@@ -17,7 +23,6 @@
     "test:watch": "jest --watch --maxWorkers=1",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./apps/nestjs-user-project/test/jest-e2e.json",
     "test:e2e:watch": "jest --config ./test/jest-e2e.json --watch"
   },
   "dependencies": {
@@ -69,6 +74,7 @@
     "@types/passport-local": "^1.0.38",
     "@types/redis": "^4.0.10",
     "@types/supertest": "^6.0.2",
+    "concurrently": "^9.2.0",
     "eslint": "^9.18.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.2",
@@ -108,6 +114,7 @@
     "moduleNameMapper": {
       "^@app/auth(|/.*)$": "<rootDir>/libs/auth/src/$1",
       "^@app/config(|/.*)$": "<rootDir>/libs/config/src/$1",
+      "^@app/decorators(|/.*)$": "<rootDir>/libs/decorators/src/$1",
       "^@app/dtos(|/.*)$": "<rootDir>/libs/dtos/src/$1",
       "^@app/entities(|/.*)$": "<rootDir>/libs/entities/src/$1",
       "^@app/guards(|/.*)$": "<rootDir>/libs/guards/src/$1",
