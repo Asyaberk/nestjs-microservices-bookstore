@@ -8,7 +8,7 @@ import { AppConfigModule } from '@app/config';
 import { KafkaModule } from '@app/kafka';
 
 import { ApiGatewayModule } from './api-gateway.module';
-import { HealthController } from './health.controller';
+import { HealthController } from './controllers/health.controller';
 
 @Module({
   imports: [

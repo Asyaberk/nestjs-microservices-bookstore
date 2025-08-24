@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { StrategyService } from './strategy.service';
+import { JwtStrategy } from './jwt.strategy';
 
 @Module({
-  providers: [StrategyService],
-  exports: [StrategyService],
+  providers: [JwtStrategy],
+  exports: [JwtStrategy],
 })
 export class StrategyModule {}
