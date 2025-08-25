@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, BadGatewayException } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { ClientKafka } from '@nestjs/microservices';
@@ -31,15 +31,16 @@ export class ApiGatewayLibraryService {
     const url = new URL(path, this.getLibraryBaseUrl()).toString();
     const headers = this.forwardHeaders(req);
 
-    console.log(`[GATEWAY] Forwarding request to ${url}`); 
+    console.log(`[GATEWAY] Forwarding request to ${url}`);
 
-    const { data } = await firstValueFrom(
-      this.httpService.get(url, { headers }),
-    );
-    return {
-      source: 'gateway',
-      data,
-    };
+    try {
+      const { data } = await firstValueFrom(
+        this.httpService.get(url, { headers }),
+      );
+      return { source: 'gateway', data };
+    } catch (err) {
+      console.log(`Library service is unavailable: ${err}`);
+    }
   }
 
   // Proxy POST calls
@@ -47,28 +48,37 @@ export class ApiGatewayLibraryService {
     const url = new URL(path, this.getLibraryBaseUrl()).toString();
     const headers = this.forwardHeaders(req);
 
-    console.log(`[GATEWAY] Forwarding request to ${url}`); 
+    console.log(`[GATEWAY] Forwarding request to ${url}`);
 
-    const { data } = await firstValueFrom(
-      this.httpService.post(url, body, { headers }),
-    );
-    return {
-      source: 'gateway',
-      data,
-    };
+    try {
+      const { data } = await firstValueFrom(
+        this.httpService.post(url, body, { headers }),
+      );
+      return { source: 'gateway', data };
+    } catch (err) {
+      console.log(`Library service is unavailable: ${err}`);
+    }
   }
 
   // Kafka events
   createRentalEvent(payload: CreateRentalDto & { userId?: number }) {
-    this.libraryProxyClient.emit('rental_created', {
-      bookId: payload.bookId,
-      userId: payload.userId,
-    });
-    return { status: 'Rental event published', payload };
+    try {
+      this.libraryProxyClient.emit('rental_created', {
+        bookId: payload.bookId,
+        userId: payload.userId,
+      });
+      return { status: 'Rental event published', payload };
+    } catch {
+      throw new BadGatewayException('Failed to publish rental event');
+    }
   }
 
   returnRentalEvent(bookId: number) {
-    this.libraryProxyClient.emit('rental_returned', { bookId });
-    return { status: 'Return event published', bookId };
+    try {
+      this.libraryProxyClient.emit('rental_returned', { bookId });
+      return { status: 'Return event published', bookId };
+    } catch {
+      throw new BadGatewayException('Failed to publish return event');
+    }
   }
 }

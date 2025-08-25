@@ -24,7 +24,7 @@ export class UsersController {
       ],
     },
   })
-  async getAllRoles(): Promise<User[]> {
+  async getAllUsers(): Promise<User[]> {
     return this.userService.findAll();
   }
 }
