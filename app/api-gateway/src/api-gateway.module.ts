@@ -6,14 +6,13 @@ import { ApiGatewayLibraryService } from './services/api-gateway.library.service
 import { Partitioners } from 'kafkajs';
 import { ApiGatewayUsersController } from './controllers/api-gateway.users.controller';
 import { ApiGatewayUsersService } from './services/api-gateway.users.service';
+import { ApiGatewayRolesController } from './controllers/api-gateway.roles.controller';
+import { ApiGatewayRolesService } from './services/api-gateway.roles.service';
 
 //dont forget to export NODE_OPTIONS="--trace-warnings" before start
 @Module({
   imports: [
     HttpModule.register({
-      baseURL:
-        process.env.LIBRARY_URL ??
-        `http://localhost:${process.env.LIBRARY_PORT ?? 3030}`,
       timeout: 5000,
       maxRedirects: 0,
     }),
@@ -34,8 +33,32 @@ import { ApiGatewayUsersService } from './services/api-gateway.users.service';
         },
       },
     ]),
+    ClientsModule.register([
+      {
+        name: 'ROLES_SERVICE',
+        transport: Transport.KAFKA,
+        options: {
+          client: {
+            clientId: 'gateway-roles-client',
+            brokers: [process.env.KAFKA_BROKERS || 'localhost:9092'],
+            producer: { createPartitioner: Partitioners.LegacyPartitioner },
+          },
+          consumer: {
+            groupId: 'gateway-roles-consumer-client',
+          },
+        },
+      },
+    ]),
   ],
-  controllers: [ApiGatewayLibraryController, ApiGatewayUsersController],
-  providers: [ApiGatewayLibraryService, ApiGatewayUsersService],
+  controllers: [
+    ApiGatewayLibraryController,
+    ApiGatewayUsersController,
+    ApiGatewayRolesController,
+  ],
+  providers: [
+    ApiGatewayLibraryService,
+    ApiGatewayUsersService,
+    ApiGatewayRolesService,
+  ],
 })
 export class ApiGatewayModule {}
