@@ -4,6 +4,8 @@ import { HttpModule } from '@nestjs/axios';
 import { ApiGatewayLibraryController } from './controllers/api-gateway.library.controller';
 import { ApiGatewayLibraryService } from './services/api-gateway.library.service';
 import { Partitioners } from 'kafkajs';
+import { ApiGatewayUsersController } from './controllers/api-gateway.users.controller';
+import { ApiGatewayUsersService } from './services/api-gateway.users.service';
 
 //dont forget to export NODE_OPTIONS="--trace-warnings" before start
 @Module({
@@ -33,7 +35,7 @@ import { Partitioners } from 'kafkajs';
       },
     ]),
   ],
-  controllers: [ApiGatewayLibraryController],
-  providers: [ApiGatewayLibraryService],
+  controllers: [ApiGatewayLibraryController, ApiGatewayUsersController],
+  providers: [ApiGatewayLibraryService, ApiGatewayUsersService],
 })
 export class ApiGatewayModule {}
