@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
-import { GuardsService } from './guards.service';
+import { JwtAuthGuard } from './auth.guard';
+import { RolesGuard } from './roles.guard';
 
 @Module({
-  providers: [GuardsService],
-  exports: [GuardsService],
+  providers: [JwtAuthGuard, RolesGuard],
+  exports: [JwtAuthGuard, RolesGuard],
 })
 export class GuardsModule {}
