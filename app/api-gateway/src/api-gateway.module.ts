@@ -8,6 +8,8 @@ import { ApiGatewayUsersController } from './controllers/api-gateway.users.contr
 import { ApiGatewayUsersService } from './services/api-gateway.users.service';
 import { ApiGatewayRolesController } from './controllers/api-gateway.roles.controller';
 import { ApiGatewayRolesService } from './services/api-gateway.roles.service';
+import { ApiGatewayBooksController } from './controllers/api-gateway.books.controller';
+import { ApiGatewayBooksService } from './services/api-gateway.books.service';
 
 //dont forget to export NODE_OPTIONS="--trace-warnings" before start
 @Module({
@@ -49,16 +51,34 @@ import { ApiGatewayRolesService } from './services/api-gateway.roles.service';
         },
       },
     ]),
+    ClientsModule.register([
+      {
+        name: 'BOOKS_SERVICE',
+        transport: Transport.KAFKA,
+        options: {
+          client: {
+            clientId: 'gateway-books-client',
+            brokers: [process.env.KAFKA_BROKERS || 'localhost:9092'],
+            producer: { createPartitioner: Partitioners.LegacyPartitioner },
+          },
+          consumer: {
+            groupId: 'gateway-books-consumer-client',
+          },
+        },
+      },
+    ]),
   ],
   controllers: [
     ApiGatewayLibraryController,
     ApiGatewayUsersController,
     ApiGatewayRolesController,
+    ApiGatewayBooksController,
   ],
   providers: [
     ApiGatewayLibraryService,
     ApiGatewayUsersService,
     ApiGatewayRolesService,
+    ApiGatewayBooksService,
   ],
 })
 export class ApiGatewayModule {}
