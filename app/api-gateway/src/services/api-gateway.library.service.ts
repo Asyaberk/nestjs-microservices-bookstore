@@ -39,7 +39,8 @@ export class ApiGatewayLibraryService {
       );
       return { source: 'gateway', data };
     } catch (err) {
-      console.log(`Library service is unavailable: ${err}`);
+      console.error(`Library service is unavailable:`, err.message);
+      throw new BadGatewayException('Library service is unavailable');
     }
   }
 
@@ -56,7 +57,8 @@ export class ApiGatewayLibraryService {
       );
       return { source: 'gateway', data };
     } catch (err) {
-      console.log(`Library service is unavailable: ${err}`);
+      console.error(`Library service is unavailable:`, err.message);
+      throw new BadGatewayException('Library service is unavailable');
     }
   }
 

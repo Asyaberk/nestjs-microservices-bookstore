@@ -4,20 +4,22 @@ import { AuthService } from './services/auth.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '@app/entities/users.entity';
 import { JwtModule } from '@nestjs/jwt';
-import { JwtStrategy } from '@app/strategy/jwt.strategy';
+import { JwtStrategy } from '@app/strategy';
 import { PassportModule } from '@nestjs/passport';
 import { RolesModule } from 'app/roles/src/roles.module';
 import { UsersModule } from 'app/users/src/users.module';
+import { KafkaModule } from '@app/kafka';
 
 @Module({
   //import jwt
   imports: [
     TypeOrmModule.forFeature([User]),
     JwtModule.register({
-      secret: process.env.JWT_SECRET || 'fallbackSecret',
+      secret: process.env.JWT_SECRET || 'cat',
       signOptions: { expiresIn: '1d' },
     }),
-    PassportModule.register({ defaultStrategy: 'jwt' }),
+    PassportModule,
+    KafkaModule,
     RolesModule,
     UsersModule,
   ],

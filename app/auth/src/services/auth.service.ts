@@ -51,7 +51,7 @@ export class AuthService {
 
 
     //login fuction
-    async login(body: LoginUserDto, response) {
+    async login(body: LoginUserDto, response?: any) {
 
         //find if user exists by email
         const user = await this.repo.findOneByEmail(body.email);
@@ -69,11 +69,19 @@ export class AuthService {
         const jwt = await this.createToken(user);
 
         //store in cookie
-        response.cookie('jwt', jwt, { httpOnly: true });
+        if (response && response.cookie) {
+            response.cookie('jwt', jwt, { httpOnly: true });
+        }
 
+        
         return {
             message: 'SUCCESS: Logged in!',
-            user: { id: user.id, email: user.email, role: user.role.name }
+            user: {
+                id: user.id,
+                email: user.email,
+                role: user.role?.name,
+            },
+            token: jwt,
         };
     }
 

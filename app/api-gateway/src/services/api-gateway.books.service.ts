@@ -38,7 +38,8 @@ export class ApiGatewayBooksService {
       );
       return { source: 'gateway', data };
     } catch (err) {
-      console.log(`Books service is unavailable: ${err}`);
+      console.error(`Books service is unavailable:`, err.message);
+      throw new BadGatewayException('Books service is unavailable');
     }
   }
 
@@ -55,7 +56,8 @@ export class ApiGatewayBooksService {
       );
       return { source: 'gateway', data };
     } catch (err) {
-      console.log(`Books service is unavailable: ${err}`);
+      console.error(`Books service is unavailable:`, err.message);
+      throw new BadGatewayException('Books service is unavailable');
     }
   }
 
@@ -72,7 +74,8 @@ export class ApiGatewayBooksService {
       );
       return { source: 'gateway', data };
     } catch (err) {
-      console.log(`Books service is unavailable: ${err}`);
+      console.error(`Books service is unavailable:`, err.message);
+      throw new BadGatewayException('Books service is unavailable');
     }
   }
 
@@ -89,7 +92,8 @@ export class ApiGatewayBooksService {
       );
       return { source: 'gateway', data };
     } catch (err) {
-      console.log(`Books service is unavailable: ${err}`);
+      console.error(`Books service is unavailable:`, err.message);
+      throw new BadGatewayException('Books service is unavailable');
     }
   }
 

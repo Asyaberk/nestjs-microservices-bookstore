@@ -39,7 +39,8 @@ export class ApiGatewayRolesService {
             );
             return { source: 'gateway', data };
         } catch (err) {
-            console.log(`Roles service is unavailable: ${err}`);
+            console.error(`Roles service is unavailable:`, err.message);
+            throw new BadGatewayException('Roles service is unavailable');
         }
     }
 
@@ -56,7 +57,8 @@ export class ApiGatewayRolesService {
           );
           return { source: 'gateway', data };
         } catch (err) {
-          console.log(`Roles service is unavailable: ${err}`);
+          console.error(`Roles service is unavailable:`, err.message);
+          throw new BadGatewayException('Roles service is unavailable');
         }
       }
     

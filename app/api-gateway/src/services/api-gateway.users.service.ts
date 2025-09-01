@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { BadGatewayException, Injectable } from "@nestjs/common";
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 
@@ -34,7 +34,8 @@ export class ApiGatewayUsersService {
       );
       return { source: 'gateway', data };
     } catch (err) {
-        console.log(`Users service is unavailable: ${err}`);
+        console.error(`Users service is unavailable:`, err.message);
+        throw new BadGatewayException('Users service is unavailable');
     }
   }
 }
