@@ -17,7 +17,7 @@ import { UsersModule } from 'app/users/src/users.module';
       secret: process.env.JWT_SECRET || 'fallbackSecret',
       signOptions: { expiresIn: '1d' },
     }),
-    PassportModule,
+    PassportModule.register({ defaultStrategy: 'jwt' }),
     RolesModule,
     UsersModule,
   ],

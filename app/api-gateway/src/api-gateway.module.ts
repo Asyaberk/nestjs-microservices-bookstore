@@ -10,6 +10,8 @@ import { ApiGatewayRolesController } from './controllers/api-gateway.roles.contr
 import { ApiGatewayRolesService } from './services/api-gateway.roles.service';
 import { ApiGatewayBooksController } from './controllers/api-gateway.books.controller';
 import { ApiGatewayBooksService } from './services/api-gateway.books.service';
+import { ApiGatewayAuthController } from './controllers/api-gateway.auth.controller';
+import { ApiGatewayAuthService } from './services/api-gateway.auth.service';
 
 //dont forget to export NODE_OPTIONS="--trace-warnings" before start
 @Module({
@@ -67,18 +69,36 @@ import { ApiGatewayBooksService } from './services/api-gateway.books.service';
         },
       },
     ]),
+    ClientsModule.register([
+      {
+        name: 'AUTH_SERVICE',
+        transport: Transport.KAFKA,
+        options: {
+          client: {
+            clientId: 'gateway-auth-client',
+            brokers: [process.env.KAFKA_BROKERS || 'localhost:9092'],
+            producer: { createPartitioner: Partitioners.LegacyPartitioner },
+          },
+          consumer: {
+            groupId: 'gateway-auth-consumer-client',
+          },
+        },
+      },
+    ]),
   ],
   controllers: [
     ApiGatewayLibraryController,
     ApiGatewayUsersController,
     ApiGatewayRolesController,
     ApiGatewayBooksController,
+    ApiGatewayAuthController,
   ],
   providers: [
     ApiGatewayLibraryService,
     ApiGatewayUsersService,
     ApiGatewayRolesService,
     ApiGatewayBooksService,
+    ApiGatewayAuthService,
   ],
 })
 export class ApiGatewayModule {}
